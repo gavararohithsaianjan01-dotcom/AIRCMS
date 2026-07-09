@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AI_Score__c</fullName>
+    <label>AI Score</label>
+    <type>Number</type>
+    <precision>5</precision>
+    <scale>2</scale>
+    <description>0-100 AI generated candidate strength score</description>
+    <required>false</required>
+</CustomField>

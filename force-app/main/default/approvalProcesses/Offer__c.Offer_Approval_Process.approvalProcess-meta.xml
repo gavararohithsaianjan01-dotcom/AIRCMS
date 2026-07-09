@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Offer_Approval_Process</fullName>
+    <label>Offer Approval Process</label>
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <enableMobileDeviceAccess>true</enableMobileDeviceAccess>
+    <entryCriteria>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>Offer__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Pending Approval</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Offer__c.Offered_Salary__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Offer_Approved_Field_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>true</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Offer_Rejected_Field_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Offer_Submitted_Field_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+
+    <!-- Step 1: Hiring Manager approves every offer -->
+    <approvalStep>
+        <label>Hiring Manager Approval</label>
+        <name>Hiring_Manager_Approval</name>
+        <entryCriteria>
+            <booleanFilter>1</booleanFilter>
+            <criteriaItems>
+                <field>Offer__c.Status__c</field>
+                <operation>equals</operation>
+                <value>Pending Approval</value>
+            </criteriaItems>
+        </entryCriteria>
+        <assignedApprover>
+            <approver>
+                <type>relatedUserField</type>
+                <value>Job_Application__r.Job_Opening__r.Hiring_Manager__c</value>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <stepNumber>1</stepNumber>
+    </approvalStep>
+
+    <!-- Step 2: If AI risk level is High (salary >10% over budget), route to Recruitment Director queue -->
+    <approvalStep>
+        <label>Director Approval (High Risk Offers)</label>
+        <name>Director_Approval_High_Risk</name>
+        <entryCriteria>
+            <booleanFilter>1</booleanFilter>
+            <criteriaItems>
+                <field>Offer__c.AI_Risk_Level__c</field>
+                <operation>equals</operation>
+                <value>High</value>
+            </criteriaItems>
+        </entryCriteria>
+        <assignedApprover>
+            <approver>
+                <type>queue</type>
+                <value>Recruitment_Directors</value>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <stepNumber>2</stepNumber>
+    </approvalStep>
+</ApprovalProcess>

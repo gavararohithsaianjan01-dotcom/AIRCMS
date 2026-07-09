@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recommendation__c</fullName>
+    <label>Recommendation</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Strong Hire</fullName>
+                <default>false</default>
+                <label>Strong Hire</label>
+            </value>
+            <value>
+                <fullName>Hire</fullName>
+                <default>true</default>
+                <label>Hire</label>
+            </value>
+            <value>
+                <fullName>No Hire</fullName>
+                <default>false</default>
+                <label>No Hire</label>
+            </value>
+            <value>
+                <fullName>Strong No Hire</fullName>
+                <default>false</default>
+                <label>Strong No Hire</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <required>false</required>
+</CustomField>

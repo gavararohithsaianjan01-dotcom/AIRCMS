@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <label>Candidate Screening Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <status>Active</status>
+    <interviewLabel>Candidate Screening Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_AI_Score</targetReference>
+        </connector>
+        <object>Job_Application__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+        <filterFormula>AND(
+    NOT(ISBLANK({!$Record.AI_Match_Score__c})),
+    ISCHANGED({!$Record.AI_Match_Score__c}),
+    ISPICKVAL({!$Record.Status__c}, &quot;Applied&quot;)
+)</filterFormula>
+    </start>
+
+    <decisions>
+        <name>Check_AI_Score</name>
+        <label>Check AI Score</label>
+        <locationX>176</locationX>
+        <locationY>120</locationY>
+        <defaultConnectorLabel>Send to Manual Screening</defaultConnectorLabel>
+        <rules>
+            <name>High_Score_Shortlist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AI_Match_Score__c</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>75.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_To_Shortlisted</targetReference>
+            </connector>
+            <label>Score 75 or above</label>
+        </rules>
+        <rules>
+            <name>Low_Score_Reject</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AI_Match_Score__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>35.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_To_Rejected</targetReference>
+            </connector>
+            <label>Score below 35</label>
+        </rules>
+    </decisions>
+
+    <recordUpdates>
+        <name>Update_To_Shortlisted</name>
+        <label>Update To Shortlisted</label>
+        <locationX>50</locationX>
+        <locationY>240</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Shortlisted</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Current_Stage__c</field>
+            <value>
+                <stringValue>Phone Screen</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+
+    <recordUpdates>
+        <name>Update_To_Rejected</name>
+        <label>Update To Rejected</label>
+        <locationX>320</locationX>
+        <locationY>240</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Rejected</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Current_Stage__c</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+</Flow>

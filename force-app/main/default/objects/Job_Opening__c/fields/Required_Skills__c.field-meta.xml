@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Required_Skills__c</fullName>
+    <label>Required Skills</label>
+    <type>LongTextArea</type>
+    <length>32768</length>
+    <visibleLines>5</visibleLines>
+    <description>Comma separated list of required skills used by AI matching engine</description>
+    <required>false</required>
+</CustomField>

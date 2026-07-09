@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <label>Interview Reminder Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <status>Active</status>
+    <interviewLabel>Interview Reminder Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Tomorrows_Interviews</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2026-01-01</startDate>
+            <startTime>07:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+
+    <recordLookups>
+        <name>Get_Tomorrows_Interviews</name>
+        <label>Get Tomorrow's Scheduled Interviews</label>
+        <locationX>50</locationX>
+        <locationY>120</locationY>
+        <connector>
+            <targetReference>Loop_Interviews</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Interview_Date__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate + 1</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Interview__c</object>
+    </recordLookups>
+
+    <loops>
+        <name>Loop_Interviews</name>
+        <label>Loop Interviews</label>
+        <locationX>50</locationX>
+        <locationY>240</locationY>
+        <collectionReference>Get_Tomorrows_Interviews</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Send_Reminder_Email</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Loop_Interviews</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+
+    <actionCalls>
+        <name>Send_Reminder_Email</name>
+        <label>Send Reminder Email</label>
+        <locationX>176</locationX>
+        <locationY>360</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Loop_Interviews</targetReference>
+        </connector>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>Reminder: Interview Scheduled Tomorrow</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>You have an interview scheduled tomorrow. Please review the candidate&apos;s application and AI match summary before the session.</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientId</name>
+            <value>
+                <elementReference>Loop_Interviews.Interviewer__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+</Flow>
