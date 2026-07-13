@@ -35,6 +35,7 @@
     </types>
     <types>
         <members>Recruitment_Directors</members>
+        <members>Hiring_Managers</members>
         <name>Queue</name>
     </types>
     <types>

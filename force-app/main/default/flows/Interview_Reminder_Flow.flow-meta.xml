@@ -19,6 +19,12 @@
         <triggerType>Scheduled</triggerType>
     </start>
 
+    <formulas>
+        <name>Tomorrows_Date</name>
+        <dataType>Date</dataType>
+        <expression>{!$Flow.CurrentDate} + 1</expression>
+    </formulas>
+
     <recordLookups>
         <name>Get_Tomorrows_Interviews</name>
         <label>Get Tomorrow's Scheduled Interviews</label>
@@ -32,7 +38,7 @@
             <field>Interview_Date__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Flow.CurrentDate + 1</elementReference>
+                <elementReference>Tomorrows_Date</elementReference>
             </value>
         </filters>
         <filters>
@@ -56,9 +62,6 @@
         <nextValueConnector>
             <targetReference>Send_Reminder_Email</targetReference>
         </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Loop_Interviews</targetReference>
-        </noMoreValuesConnector>
     </loops>
 
     <actionCalls>

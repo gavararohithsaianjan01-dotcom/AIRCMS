@@ -56,14 +56,14 @@
                 <value>Pending Approval</value>
             </criteriaItems>
         </entryCriteria>
+        <ifCriteriaNotMet>GoToNextStep</ifCriteriaNotMet>
         <assignedApprover>
             <approver>
-                <type>relatedUserField</type>
-                <value>Job_Application__r.Job_Opening__r.Hiring_Manager__c</value>
+                <type>queue</type>
+                <name>Hiring_Managers</name>
             </approver>
             <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
         </assignedApprover>
-        <stepNumber>1</stepNumber>
     </approvalStep>
 
     <!-- Step 2: If AI risk level is High (salary >10% over budget), route to Recruitment Director queue -->
@@ -78,13 +78,13 @@
                 <value>High</value>
             </criteriaItems>
         </entryCriteria>
+        <ifCriteriaNotMet>ApproveRecord</ifCriteriaNotMet>
         <assignedApprover>
             <approver>
                 <type>queue</type>
-                <value>Recruitment_Directors</value>
+                <name>Recruitment_Directors</name>
             </approver>
             <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
         </assignedApprover>
-        <stepNumber>2</stepNumber>
     </approvalStep>
 </ApprovalProcess>

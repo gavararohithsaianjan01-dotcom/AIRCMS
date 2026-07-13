@@ -48,11 +48,7 @@
         <modifyAllRecords>true</modifyAllRecords>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <fieldPermissions>
-        <field>Candidate__c.Email__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
+    
     <fieldPermissions>
         <field>Candidate__c.Phone__c</field>
         <editable>true</editable>
@@ -195,11 +191,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <field>Job_Application__c.AI_Notes__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>Interview__c.Job_Application__c</field>
         <editable>true</editable>
         <readable>true</readable>
     </fieldPermissions>
