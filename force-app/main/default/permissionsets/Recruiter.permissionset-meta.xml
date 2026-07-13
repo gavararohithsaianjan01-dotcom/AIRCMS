@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Recruiter</label>
     <description>Day-to-day recruiter access: manage candidates, applications and interviews. Can create/submit offers but cannot approve or delete them.</description>
@@ -155,16 +155,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <field>Job_Application__c.Candidate__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>Job_Application__c.Job_Opening__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <field>Job_Application__c.Application_Date__c</field>
         <editable>true</editable>
         <readable>true</readable>
@@ -226,16 +216,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <field>Interview__c.Status__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>Offer__c.Job_Application__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>Offer__c.Offered_Salary__c</field>
         <editable>true</editable>
         <readable>true</readable>
     </fieldPermissions>

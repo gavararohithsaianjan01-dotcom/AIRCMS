@@ -5,4 +5,7 @@
     <queueSobject>
         <sobjectType>Offer__c</sobjectType>
     </queueSobject>
+    <queueSobject>
+        <sobjectType>Job_Application__c</sobjectType>
+    </queueSobject>
 </Queue>
