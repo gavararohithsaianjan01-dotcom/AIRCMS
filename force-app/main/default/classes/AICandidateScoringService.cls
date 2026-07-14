@@ -46,7 +46,8 @@ public with sharing class AICandidateScoringService {
             WHERE Id IN :jobIds
         ]);
 
-        List<Candidate__c> candidatesToUpdate = new List<Candidate__c>();
+	List<Job_Application__c> applicationsToUpdate = new List<Job_Application__c>();
+	List<Candidate__c> candidatesToUpdate = new List<Candidate__c>();
 
         for (Job_Application__c app : applications) {
             Candidate__c cand = candidates.get(app.Candidate__c);
@@ -57,9 +58,7 @@ public with sharing class AICandidateScoringService {
 
             ScoreResult result = computeMatchScore(cand, job);
 
-            app.AI_Match_Score__c = result.score;
-            app.AI_Recommendation__c = result.recommendation;
-            app.AI_Notes__c = result.summary;
+	
 
             Candidate__c candUpdate = new Candidate__c(
                 Id = cand.Id,
@@ -70,9 +69,7 @@ public with sharing class AICandidateScoringService {
             candidatesToUpdate.add(candUpdate);
         }
 
-        if (!candidatesToUpdate.isEmpty()) {
-            update candidatesToUpdate;
-        }
+        	
     }
 
     /**
